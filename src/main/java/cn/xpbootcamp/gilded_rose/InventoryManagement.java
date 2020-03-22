@@ -6,8 +6,6 @@ public class InventoryManagement {
             return quality;
         }
 
-        int currentQuality = quality;
-
         if (type == "Backstage pass") {
             if (days > sellIn) {
                 return 0;
@@ -23,10 +21,19 @@ public class InventoryManagement {
 
         }
 
+        int currentQuality = quality;
+
         if (sellIn >= days) {
             currentQuality += days * qualityRate;
         } else {
             currentQuality += sellIn * qualityRate + (days - sellIn) * 2 * qualityRate;
+        }
+
+        if (currentQuality < 0) {
+            return 0;
+        }
+        if (currentQuality > 50) {
+            return 50;
         }
 
         return currentQuality;

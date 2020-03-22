@@ -49,4 +49,24 @@ class InventoryManagementTest {
         int expectedQuality = 10 + 2 * 5 + 3 * 1;
         assertEquals(expectedQuality, inventoryManagement.calculateQualityAfterDays(type, sellIn, quality, qualityRate, days));
     }
+
+    @Test
+    void should_not_less_0() {
+        int sellIn = 5;
+        int quality = 5;
+        int qualityRate = -1;
+        int days = 10;
+        int expectedQuality = 0;
+        assertEquals(expectedQuality, inventoryManagement.calculateQualityAfterDays(anyString(), sellIn, quality, qualityRate, days));
+    }
+
+    @Test
+    void should_not_more_50() {
+        int sellIn = 5;
+        int quality = 40;
+        int qualityRate = 5;
+        int days = 10;
+        int expectedQuality = 50;
+        assertEquals(expectedQuality, inventoryManagement.calculateQualityAfterDays(anyString(), sellIn, quality, qualityRate, days));
+    }
 }
