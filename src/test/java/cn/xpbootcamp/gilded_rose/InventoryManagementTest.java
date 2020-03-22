@@ -24,4 +24,29 @@ class InventoryManagementTest {
         assertEquals(expectedQuality, inventoryManagement.calculateQualityAfterDays(anyString(), sellIn, quality, qualityRate, days));
     }
 
+    @Test
+    void should_more_when_qualityRate_is_positive() {
+        int quality = 10;
+        int qualityRate = 2;
+        int days = 2;
+        assertTrue(inventoryManagement.calculateQualityAfterDays(anyString(), anyInt(), quality, qualityRate, days) > quality);
+    }
+
+    @Test
+    void should_same_when_qualityRate_is_0() {
+        int quality = 10;
+        int qualityRate = 0;
+        assertTrue(inventoryManagement.calculateQualityAfterDays(anyString(), anyInt(), quality, qualityRate, anyInt()) == quality);
+    }
+
+    @Test
+    void should_diff_qualityRate_when_type_is_BackstagePass_and_days_before_sellIn_10() {
+        String type = "Backstage pass";
+        int sellIn = 10;
+        int quality = 10;
+        int qualityRate = 1;
+        int days = 6;
+        int expectedQuality = 10 + 2 * 5 + 3 * 1;
+        assertEquals(expectedQuality, inventoryManagement.calculateQualityAfterDays(type, sellIn, quality, qualityRate, days));
+    }
 }
