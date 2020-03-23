@@ -1,8 +1,14 @@
 package cn.xpbootcamp.gilded_rose;
 
 public class InventoryManagement {
-    public int calculateQualityAfterDays(String type, int sellIn, int quality, int qualityRate,int days) {
-        if (days <= 0){
+    public int calculateQualityAfterDays(String type, int sellIn, int quality, int days) {
+        int defaultQualityRate = -1;
+
+        if (type == "Aged Brie") {
+            return calculateQualityAfterDaysByQualityRate(sellIn, quality, 1, days);
+        }
+
+        if (type == "Sulfuras") {
             return quality;
         }
 
@@ -11,14 +17,23 @@ public class InventoryManagement {
                 return 0;
             }
             if (sellIn <= 5) {
-                return calculateQualityAfterDays("any", sellIn, quality, 3, days);
+                return calculateQualityAfterDaysByQualityRate(sellIn, quality, 3, days);
             }
             if (sellIn <= 10) {
-                return calculateQualityAfterDays("any", sellIn, quality, 2, Math.min(sellIn - 5, days) ) + calculateQualityAfterDays("any", 5, quality, 3, days - (sellIn - 5)) - quality;
+                return calculateQualityAfterDaysByQualityRate(sellIn, quality, 2, Math.min(sellIn - 5, days) ) + calculateQualityAfterDaysByQualityRate(5, quality, 3, days - (sellIn - 5)) - quality;
             }
 
-            return calculateQualityAfterDays("any", sellIn - 10, quality, qualityRate, Math.min(sellIn - 10, days)) + calculateQualityAfterDays("Backstage pass", 10, quality, qualityRate, days - (sellIn - 10)) - quality;
+            return calculateQualityAfterDaysByQualityRate(sellIn - 10, quality, 1, Math.min(sellIn - 10, days)) + calculateQualityAfterDays("Backstage pass", 10, quality, days - (sellIn - 10)) - quality;
 
+        }
+
+        return calculateQualityAfterDaysByQualityRate(sellIn, quality, defaultQualityRate, days);
+
+    }
+
+        public int calculateQualityAfterDaysByQualityRate(int sellIn, int quality, int qualityRate,int days) {
+        if (days <= 0){
+            return quality;
         }
 
         int currentQuality = quality;
